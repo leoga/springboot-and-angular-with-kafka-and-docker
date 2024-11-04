@@ -1,0 +1,62 @@
+<div class="container mt-4">
+  <div class="modal-header">
+      <h2 class="mb-4">Spaceship Maintenance</h2>
+      <button class="btn btn-primary me-2" (click)="createSpaceship()">Create</button>
+  </div>
+  <div class="mb-3">
+    <div class="input-group mb-3">
+      <input type="number" class="form-control" [(ngModel)]="searchId" placeholder="Enter Spaceship ID">
+      <input type="text" class="form-control" [(ngModel)]="searchName" placeholder="Enter Spaceship Name">
+      <button class="btn btn-primary" (click)="searchSpaceship()">Search</button>
+      <button class="btn btn-secondary" (click)="clearSearch()">Clear</button>
+    </div>
+  </div>
+  <div *ngIf="loading" class="alert alert-info">Loading...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  <div *ngIf="!loading && !error && (!spaceships || spaceships.length === 0)" class="alert alert-warning">
+    <p>No records found</p>
+  </div>
+  <table *ngIf="!loading && !error && spaceships && spaceships.length > 0" class="table table-striped">
+    <thead>
+      <tr>
+        <th (click)="sort('id')">ID <i class="bi" [ngClass]="getSortIcon('id')"></i></th>
+        <th (click)="sort('name')">Name <i class="bi" [ngClass]="getSortIcon('name')"></i></th>
+        <th (click)="sort('model')">Model <i class="bi" [ngClass]="getSortIcon('model')"></i></th>
+        <th style="width: 100px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let spaceship of spaceships">
+        <td>{{ spaceship.id }}</td>
+        <td>{{ spaceship.name }}</td>
+        <td>{{ spaceship.model }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-2" (click)="editSpaceship(spaceship)"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-danger" (click)="deleteSpaceship(spaceship)"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <nav *ngIf="totalPages > 1" aria-label="Spaceship list pagination">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 0">
+        <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="i === currentPage">
+        <a class="page-link" href="javascript:void(0)" (click)="onPageChange(i)">{{ i + 1 }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+        <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="mt-3 text-center">
+    <p>Page {{ currentPageDisplay }} of {{ totalPages }}</p>
+  </div>
+</div>

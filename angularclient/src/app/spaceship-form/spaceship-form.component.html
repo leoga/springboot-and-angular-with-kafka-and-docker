@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ isEditMode ? 'Edit' : 'Create' }} Spaceship</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="spaceshipForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name:</label>
+      <input id="name" type="text" class="form-control" formControlName="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="model" class="form-label">Model:</label>
+      <input id="model" type="text" class="form-control" formControlName="model" required>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="!spaceshipForm.valid">
+    {{ isEditMode ? 'Update' : 'Create' }} Spaceship
+  </button>
+</div>
